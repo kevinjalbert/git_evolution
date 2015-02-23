@@ -2,4 +2,4 @@
 
 require 'git_evolution'
 
-GitEvolution.new.run(ARGV)
+GitEvolution.run(ARGV)

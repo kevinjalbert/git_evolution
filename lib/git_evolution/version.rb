@@ -1,3 +1,3 @@
-class GitEvolution
+module GitEvolution
   VERSION = '0.0.1'
 end
