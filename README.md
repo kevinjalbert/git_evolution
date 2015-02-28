@@ -1,6 +1,8 @@
 # GitEvolution
 
 [![Build Status](https://travis-ci.org/kevinjalbert/git_evolution.svg)](https://travis-ci.org/kevinjalbert/git_evolution)
+[![Coverage Status](https://coveralls.io/repos/kevinjalbert/git_evolution/badge.svg)](https://coveralls.io/r/kevinjalbert/git_evolution)
+[![Code Climate](https://codeclimate.com/github/kevinjalbert/git_evolution/badges/gpa.svg)](https://codeclimate.com/github/kevinjalbert/git_evolution)
 
 TODO: Write a gem description
 
