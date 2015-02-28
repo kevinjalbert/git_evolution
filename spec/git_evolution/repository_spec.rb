@@ -3,12 +3,12 @@ require 'spec_helper'
 RSpec.describe GitEvolution::Repository do
   describe '.new' do
     context 'valid repository directory' do
-      before(:each) { RepositoryHelper.create_repository }
-      after(:each) { RepositoryHelper.delete_repository }
+      before(:each) { create_repository }
+      after(:each) { delete_repository }
 
       it 'detects repository' do
-        repo = described_class.new(RepositoryHelper.repository_dir)
-        expect(repo.dir).to eq(RepositoryHelper.repository_dir)
+        repo = described_class.new(repository_dir)
+        expect(repo.dir).to eq(repository_dir)
       end
     end
 
