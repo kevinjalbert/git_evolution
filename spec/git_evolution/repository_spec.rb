@@ -21,4 +21,30 @@ RSpec.describe GitEvolution::Repository do
       end
     end
   end
+
+  describe '#line_history' do
+    context 'valid repository directory' do
+      before(:each) do
+        create_repository
+
+        add_to_index('README.md', "This is a Reedme\n\TODO stuff")
+        create_commit("John Smith", 'john@smith.com', Chronic.parse('1 day ago') , commit1_subject)
+
+        add_to_index('README.md', "This is a Readme\n\TODO stuff")
+        create_commit("John", 'john@smith.com', Chronic.parse('now'), commit2_subject, "Fix typo: Reedme -> Readme")
+      end
+      after(:each) { delete_repository }
+
+      let(:commit1_subject) { 'Initial Commit' }
+      let(:commit2_subject) { 'Fix typo in README' }
+
+      it 'returns commit log containing commits' do
+        repo = described_class.new(repository_dir)
+        line_history = repo.line_history(1, 2, 'README.md')
+
+        expect(line_history).to include(commit1_subject)
+        expect(line_history).to include(commit2_subject)
+      end
+    end
+  end
 end
