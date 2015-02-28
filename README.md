@@ -1,5 +1,7 @@
 # GitEvolution
 
+[![Build Status](https://travis-ci.org/kevinjalbert/git_evolution.svg)](https://travis-ci.org/kevinjalbert/git_evolution)
+
 TODO: Write a gem description
 
 ## Installation
