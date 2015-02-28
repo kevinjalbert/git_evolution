@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.executables   = Dir['bin/*'].map { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_development_dependency 'bundler', '~> 1.7'
-  spec.add_development_dependency 'rake', '~> 10.0'
-  spec.add_development_dependency 'rugged', '~> 0.21.4'
+  spec.add_dependency 'bundler', '~> 1.7'
+  spec.add_dependency 'rake', '~> 10.0'
+  spec.add_dependency 'rugged', '~> 0.21.4'
 end
