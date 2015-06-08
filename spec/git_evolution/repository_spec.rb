@@ -22,16 +22,39 @@ RSpec.describe GitEvolution::Repository do
     end
   end
 
+  describe '#commit' do
+    context 'valid repository directory' do
+      before(:each) do
+        create_repository
+        add_to_index('README.md', "This is a Reedme\n\TODO stuff")
+        commit
+      end
+
+      after(:each) { delete_repository }
+
+      let(:commit) { create_commit('John Smith', 'john@smith.com', Chronic.parse('1 day ago'), 'Initial Commit') }
+
+      it 'returns commit' do
+        repo = described_class.new(repository_dir)
+        repo_commit = repo.commit(commit)
+
+        expect(repo_commit).to be_a(GitEvolution::Commit)
+        expect(repo_commit.sha).to eq(commit)
+        expect(repo_commit.sha.size).to eq(40)
+      end
+    end
+  end
+
   describe '#line_history' do
     context 'valid repository directory' do
       before(:each) do
         create_repository
 
         add_to_index('README.md', "This is a Reedme\n\TODO stuff")
-        create_commit("John Smith", 'john@smith.com', Chronic.parse('1 day ago') , commit1_subject)
+        create_commit('John Smith', 'john@smith.com', Chronic.parse('1 day ago'), commit1_subject)
 
         add_to_index('README.md', "This is a Readme\n\TODO stuff")
-        create_commit("John", 'john@smith.com', Chronic.parse('now'), commit2_subject, "Fix typo: Reedme -> Readme")
+        create_commit('John', 'john@smith.com', Chronic.parse('now'), commit2_subject, 'Fix typo: Reedme -> Readme')
       end
       after(:each) { delete_repository }
 

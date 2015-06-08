@@ -24,14 +24,16 @@ module RepositoryHelper
 
     tree = @repo.index.write_tree(@repo)
 
-    Rugged::Commit.create(@repo,
-                          author: author,
-                          message: "#{subject}\n\n#{body}".strip,
-                          committer: author,
-                          parents: @repo.empty? ? [] : [@repo.head.target].compact,
-                          tree: tree,
-                          update_ref: 'HEAD')
+    commit = Rugged::Commit.create(@repo,
+                                   author: author,
+                                   message: "#{subject}\n\n#{body}".strip,
+                                   committer: author,
+                                   parents: @repo.empty? ? [] : [@repo.head.target].compact,
+                                   tree: tree,
+                                   update_ref: 'HEAD')
 
-    @repo.checkout('master', {strategy: [:force]})
+    @repo.checkout('master', strategy: [:force])
+
+    commit
   end
 end
