@@ -96,6 +96,16 @@ RSpec.describe GitEvolution::Repository do
         expect(line_history).to include(commit1_subject)
         expect(line_history).to include(commit2_subject)
       end
+
+      context 'with since option' do
+        it 'returns only commit within last 6 hours' do
+          repo = described_class.new(repository_dir)
+          line_history = repo.line_history(1, 2, 'README.md', '6 hours ago')
+
+          expect(line_history).to_not include(commit1_subject)
+          expect(line_history).to include(commit2_subject)
+        end
+      end
     end
   end
 end

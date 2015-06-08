@@ -16,15 +16,17 @@ module GitEvolution
       shas.map { |sha| commit(sha) }
     end
 
-    def line_commits(start_line, end_line, file)
-      results = line_history(start_line, end_line, file)
+    def line_commits(start_line, end_line, file, since = nil)
+      results = line_history(start_line, end_line, file, since)
       commit_shas = results.scan(/^commit ([0-9a-f]{40})/).flatten
       commits(commit_shas)
     end
 
-    def line_history(start_line, end_line, file)
+    def line_history(start_line, end_line, file, since = nil)
+      since_option = "--since '#{since}'"
+
       Dir.chdir(dir) do
-        return `git --no-pager log -L#{start_line},#{end_line}:#{file} --follow #{file}`
+        return `git --no-pager log #{since_option if since} -L#{start_line},#{end_line}:#{file} --follow #{file}`
       end
     end
   end
