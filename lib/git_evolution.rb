@@ -7,9 +7,7 @@ module GitEvolution
     file = args[2]
 
     repo = Repository.new(File.dirname(File.expand_path(file)))
-    results = repo.line_history(start_line, end_line, file)
-    commit_shas = results.scan(/^commit ([0-9a-f]{40})/).flatten
-    commits = repo.commits(commit_shas)
+    commits = repo.line_commits(start_line, end_line, file)
 
     ownership = Hash.new(0)
 
