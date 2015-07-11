@@ -24,13 +24,13 @@ module GitEvolution
     end
 
     def self.parse_range(range)
-        regex_matches = range.match(/^(\d+):(\d+)/)
-        raise 'The --range option was not in the valid format (N:N)' if regex_matches.nil?
+      regex_matches = range.match(/^(\d+):(\d+)/)
+      raise 'The --range option was not in the valid format (N:N)' if regex_matches.nil?
 
-        start_line = regex_matches[1].to_i
-        end_line = regex_matches[2].to_i
+      start_line = regex_matches[1].to_i
+      end_line = regex_matches[2].to_i
 
-        return start_line, end_line
+      return start_line, end_line
     end
 
     def self.validate_options!(options)
@@ -44,11 +44,7 @@ module GitEvolution
         raise 'Start line cannot be greater than the end line' if options.start_line > options.end_line
 
         file_length = File.new(options.file).readlines.size
-        if options.start_line > file_length
-          raise "Start line cannot be larger than the length of the file (#{file_length})"
-        elsif options.end_line > file_length
-          raise "End line cannot be larger than the length of the file (#{file_length})"
-        end
+        raise "End line cannot be larger than the length of the file (#{file_length})" if options.end_line > file_length
       end
     end
   end
