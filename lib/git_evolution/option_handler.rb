@@ -3,6 +3,7 @@ module GitEvolution
     def self.parse_options(args)
       options = OpenStruct.new(
         range: nil,
+        since: nil,
         start_line: nil,
         end_line: nil,
       )
@@ -12,6 +13,9 @@ module GitEvolution
         opts.version = VERSION
         opts.on '-r', '--range N:N', String, 'The specified range of lines to consider within the file (optional)' do |value|
           options.range = value
+        end
+        opts.on '-s', '--since STRING', String, 'Consider the commits which are more recent than the specified time (optional)' do |value|
+          options.since = value
         end
       end.parse!
 
@@ -45,6 +49,11 @@ module GitEvolution
 
         file_length = File.new(options.file).readlines.size
         raise "End line cannot be larger than the length of the file (#{file_length})" if options.end_line > file_length
+      end
+
+      if !options.since.nil?
+        options.since = Chronic.parse(options.since)
+        raise 'The since time could not be properly parsed' if options.since.nil?
       end
     end
   end

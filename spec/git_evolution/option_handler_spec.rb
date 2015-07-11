@@ -50,6 +50,7 @@ RSpec.describe GitEvolution::OptionHandler do
       OpenStruct.new(
         file: file,
         range: range,
+        since: since,
         start_line: start_line,
         end_line: end_line
       )
@@ -58,6 +59,7 @@ RSpec.describe GitEvolution::OptionHandler do
     let!(:tmp_dir) { Dir.mktmpdir }
     let(:file) { tmp_dir + '/file.txt' }
     let(:range) { '1:2' }
+    let(:since) { '1 day ago' }
     let(:start_line) { 1 }
     let(:end_line) { 20 }
 
@@ -101,6 +103,24 @@ RSpec.describe GitEvolution::OptionHandler do
 
       it 'invalid options' do
         expect { described_class.validate_options!(options) }.to raise_error
+      end
+    end
+
+    context 'since option' do
+      context 'since is not parsable' do
+        let(:since) { 'csdcsdc' }
+
+        it 'invalid options' do
+          expect { described_class.validate_options!(options) }.to raise_error
+        end
+      end
+
+      context 'since is parsable' do
+        let(:since) { '1 days ago' }
+
+        it 'valid options' do
+          expect { described_class.validate_options!(options) }.to_not raise_error
+        end
       end
     end
   end

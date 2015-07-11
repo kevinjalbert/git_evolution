@@ -5,7 +5,7 @@ module GitEvolution
     options = OptionHandler.parse_options(args)
 
     repo = Repository.new(File.dirname(File.expand_path(options.file)))
-    commits = repo.line_commits(options.start_line, options.end_line, options.file)
+    commits = repo.line_commits(options.start_line, options.end_line, options.file, options.since)
 
     ReportPresenter.new(commits).print
   rescue StandardError => e
