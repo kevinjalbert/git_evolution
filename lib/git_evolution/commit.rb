@@ -1,18 +1,23 @@
 module GitEvolution
   class Commit
-    attr_reader :sha, :author, :date, :title, :body
+    attr_reader :sha, :author, :date, :subject, :body, :additions, :deletions
 
-    def initialize(repository, sha)
-      Dir.chdir(repository.dir) do
-        raw_commit = `git --no-pager show -s --format=%an%n%n%at%n%n%s%n%n%b #{sha}`
+    def initialize(raw_commit)
+      @sha = raw_commit.scan(/^commit\s+(.*?)$/).flatten.first.strip
+      @author = raw_commit.scan(/^Author:\s+(.*?)$/).flatten.first.strip
+      @date= raw_commit.scan(/^Date:\s+(.*?)$/).flatten.first.strip
 
-        commit_data = raw_commit.split("\n\n")
-        @author = commit_data[0]
-        @date = commit_data[1]
-        @title = commit_data[2]
-        @body = commit_data[3..-1].join
-        @sha = sha
+      raw_body_lines = raw_commit.scan(/^Date:.*?$(.*?)^diff/m).flatten.first.strip.split("\n")
+      @subject = raw_body_lines.first.strip
+
+      if raw_body_lines.size > 1
+        @body = raw_body_lines[1..-1].map { |line| line.gsub(/^\s+/, '') }.join("\n")
+        @body.sub!(/\n+/, '') if @body.start_with?("\n")
       end
+
+      raw_diff_lines = raw_commit.scan(/^@@.*?$(.*)?/m).flatten.first.strip.split("\n")
+      @additions = raw_diff_lines.count { |line| line.start_with?('+') }
+      @deletions = raw_diff_lines.count { |line| line.start_with?('-') }
     end
   end
 end

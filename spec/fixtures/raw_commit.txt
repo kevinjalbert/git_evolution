@@ -1,0 +1,18 @@
+commit 01da64f8b1021a1007fc3ee9d0acbe87c02217e7
+Author: Kevin Jalbert <kevin.j.jalbert@gmail.com>
+Date:   Mon Jun 8 07:31:34 2015 -0400
+
+    Add ability to acquire the ordered commits for a line range
+
+    Add spec to test #line_commits. Slight refactoring to make use of
+    #line_commits.
+
+diff --git a/lib/git_evolution/repository.rb b/lib/git_evolution/repository.rb
+--- a/lib/git_evolution/repository.rb
++++ b/lib/git_evolution/repository.rb
+@@ -24,0 +25,5 @@
++    def line_history(start_line, end_line, file)
++      Dir.chdir(dir) do
++        return `git --no-pager log -L#{start_line},#{end_line}:#{file} --follow #{file}`
++      end
++    end

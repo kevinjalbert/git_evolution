@@ -22,29 +22,6 @@ RSpec.describe GitEvolution::Repository do
     end
   end
 
-  describe '#commit' do
-    context 'valid repository directory' do
-      before(:each) do
-        create_repository
-        add_to_index('README.md', "This is a Reedme\n\TODO stuff")
-        commit
-      end
-
-      after(:each) { delete_repository }
-
-      let(:commit) { create_commit('John Smith', 'john@smith.com', Chronic.parse('1 day ago'), 'Initial Commit') }
-
-      it 'returns commit' do
-        repo = described_class.new(repository_dir)
-        repo_commit = repo.commit(commit)
-
-        expect(repo_commit).to be_a(GitEvolution::Commit)
-        expect(repo_commit.sha).to eq(commit)
-        expect(repo_commit.sha.size).to eq(40)
-      end
-    end
-  end
-
   describe '#line_commits' do
     context 'valid repository directory' do
       before(:each) do
@@ -67,13 +44,13 @@ RSpec.describe GitEvolution::Repository do
 
         expect(line_commits.size).to eq(2)
         expect(line_commits.first).to be_a(GitEvolution::Commit)
-        expect(line_commits.first.title).to eq(commit2_subject)
-        expect(line_commits.last.title).to eq(commit1_subject)
+        expect(line_commits.first.subject).to eq(commit2_subject)
+        expect(line_commits.last.subject).to eq(commit1_subject)
       end
     end
   end
 
-  describe '#line_history' do
+  describe '#raw_line_history' do
     context 'valid repository directory' do
       before(:each) do
         create_repository
@@ -89,21 +66,21 @@ RSpec.describe GitEvolution::Repository do
       let(:commit1_subject) { 'Initial Commit' }
       let(:commit2_subject) { 'Fix typo in README' }
 
-      it 'returns commit log containing commits' do
+      it 'returns raw commit log containing commits' do
         repo = described_class.new(repository_dir)
-        line_history = repo.line_history(1, 2, 'README.md')
+        raw_line_history = repo.raw_line_history(1, 2, 'README.md')
 
-        expect(line_history).to include(commit1_subject)
-        expect(line_history).to include(commit2_subject)
+        expect(raw_line_history).to include(commit1_subject)
+        expect(raw_line_history).to include(commit2_subject)
       end
 
       context 'with since option' do
         it 'returns only commit within last 6 hours' do
           repo = described_class.new(repository_dir)
-          line_history = repo.line_history(1, 2, 'README.md', '6 hours ago')
+          raw_line_history = repo.raw_line_history(1, 2, 'README.md', '6 hours ago')
 
-          expect(line_history).to_not include(commit1_subject)
-          expect(line_history).to include(commit2_subject)
+          expect(raw_line_history).to_not include(commit1_subject)
+          expect(raw_line_history).to include(commit2_subject)
         end
       end
     end

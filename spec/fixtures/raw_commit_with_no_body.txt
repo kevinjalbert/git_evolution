@@ -1,0 +1,19 @@
+commit 326f5329333e65aebb6ce7f8566d88a58964022a
+Author: Kevin Jalbert <kevin.j.jalbert@gmail.com>
+Date:   Mon Jun 8 07:47:13 2015 -0400
+
+    Add ability to specify the '--since' option for line_{history|commits}
+
+diff --git a/lib/git_evolution/repository.rb b/lib/git_evolution/repository.rb
+--- a/lib/git_evolution/repository.rb
++++ b/lib/git_evolution/repository.rb
+@@ -25,5 +25,7 @@
+-    def line_history(start_line, end_line, file)
++    def line_history(start_line, end_line, file, since = nil)
++      since_option = "--since '#{since}'"
++
+       Dir.chdir(dir) do
+-        return `git --no-pager log -L#{start_line},#{end_line}:#{file} --follow #{file}`
++        return `git --no-pager log #{since_option if since} -L#{start_line},#{end_line}:#{file} --follow #{file}`
+       end
+     end
