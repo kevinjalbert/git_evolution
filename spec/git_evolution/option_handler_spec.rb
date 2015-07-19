@@ -43,6 +43,14 @@ RSpec.describe GitEvolution::OptionHandler do
         expect { described_class.parse_range(range) }.to raise_error
       end
     end
+
+    context 'nil range' do
+      let(:range) { nil }
+
+      it 'returns nil' do
+        expect(described_class.parse_range(range)).to be_nil
+      end
+    end
   end
 
   describe '.validate_options!' do

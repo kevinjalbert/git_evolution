@@ -28,6 +28,8 @@ module GitEvolution
     end
 
     def self.parse_range(range)
+      return if range.nil?
+
       regex_matches = range.match(/^(\d+):(\d+)/)
       raise 'The --range option was not in the valid format (N:N)' if regex_matches.nil?
 
