@@ -3,6 +3,8 @@ module GitEvolution
     def initialize(commits)
       @commits = commits
       @ownership = { commits: Hash.new(0), changes: Hash.new(0) }
+
+      calculate_ownership!
     end
 
     def print
@@ -22,9 +24,6 @@ module GitEvolution
         puts "#{commit.author} (#{commit.date}) - #{commit.sha}"
         puts "#{commit.subject}"
         puts
-
-        @ownership[:commits][commit.author] = @ownership[:commits][commit.author] + 1
-        @ownership[:changes][commit.author] = @ownership[:changes][commit.author] + commit.additions + commit.deletions
       end
     end
 
@@ -44,6 +43,21 @@ module GitEvolution
 
       @ownership[:changes].each do |author, count|
         puts "#{author} - #{count}/#{total_changes} (#{(count.to_f / total_changes * 100).round(2)}%)"
+      end
+    end
+
+    def calculate_ownership!
+      @commits.each do |commit|
+        @ownership[:commits][commit.author] = @ownership[:commits][commit.author] + 1
+        @ownership[:changes][commit.author] = @ownership[:changes][commit.author] + commit.additions + commit.deletions
+      end
+
+      sort_ownership!
+    end
+
+    def sort_ownership!
+      @ownership.keys.each do |keys|
+        @ownership[keys] = @ownership[keys].sort { |a,b| b[1] <=> a[1] }.to_h
       end
     end
   end
