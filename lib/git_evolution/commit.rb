@@ -7,7 +7,7 @@ module GitEvolution
       @author = raw_commit.scan(/^Author:\s+(.*?)$/).flatten.first.strip
       @date= raw_commit.scan(/^Date:\s+(.*?)$/).flatten.first.strip
 
-      raw_body_lines = raw_commit.scan(/^Date:.*?$(.*)[^diff|$]/m).flatten.first.strip.split("\n")
+      raw_body_lines = (raw_commit + "\n\u0000").scan(/^Date:.*?$(.*?)^[diff|\u0000]/m).flatten.first.strip.split("\n")
       @subject = raw_body_lines.first.strip
 
       if raw_body_lines.size > 1
