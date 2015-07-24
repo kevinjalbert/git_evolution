@@ -17,7 +17,10 @@ module GitEvolution
       since_option = "--since '#{since}'"
 
       Dir.chdir(dir) do
-        return `git --no-pager log -z #{since_option if since} -L#{start_line},#{end_line}:#{file} --follow #{file}`
+        return `git --no-pager log -p -z\
+        #{since_option if since}\
+        #{"-L#{start_line},#{end_line}:#{file}" if start_line && end_line}\
+        --follow #{file}`
       end
     end
   end
