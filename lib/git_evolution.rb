@@ -4,7 +4,7 @@ module GitEvolution
   def self.run(args)
     options = OptionHandler.parse_options(args)
 
-    repo = Repository.new(File.dirname(File.expand_path(options.file)))
+    repo = Repository.new(options.file)
     commits = repo.line_commits(options.start_line, options.end_line, options.file, options.since)
 
     ReportPresenter.new(commits).print
