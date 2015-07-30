@@ -19,7 +19,7 @@ module GitEvolution
         end
       end.parse!
 
-      options[:file] = args[0]
+      options[:file] = File.expand_path(args[0])
       options[:start_line], options[:end_line] = parse_range(options[:range])
 
       validate_options!(options)
