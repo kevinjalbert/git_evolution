@@ -2,8 +2,9 @@ require 'spec_helper'
 
 RSpec.describe GitEvolution::OptionHandler do
   describe '.parse_options' do
-    subject { described_class.parse_options([file]) }
+    subject { described_class.parse_options(args) }
 
+    let(:args) { [file] }
     let!(:tmp_dir) { Dir.mktmpdir }
     let(:file) { tmp_dir + '/file.txt' }
     let(:start_line) { 1 }
@@ -20,6 +21,14 @@ RSpec.describe GitEvolution::OptionHandler do
       expect(subject.start_line).to eq(start_line)
       expect(subject.end_line).to eq(end_line)
       expect(subject.file).to eq(file)
+    end
+
+    context 'no arguments passed' do
+      let(:args) { [] }
+
+      it 'raises a FileMissingException' do
+        expect { subject }.to raise_error(GitEvolution::FileMissingError)
+      end
     end
   end
 
@@ -84,7 +93,7 @@ RSpec.describe GitEvolution::OptionHandler do
       let(:end_line) { 1 }
 
       it 'invalid options' do
-        expect { described_class.validate_options!(options) }.to raise_error
+        expect { described_class.validate_options!(options) }.to raise_error(GitEvolution::RangeOutOfBoundsError)
       end
     end
 
@@ -94,13 +103,13 @@ RSpec.describe GitEvolution::OptionHandler do
       before { FileUtils.rm(file) }
 
       it 'invalid options' do
-        expect { described_class.validate_options!(options) }.to raise_error
+        expect { described_class.validate_options!(options) }.to raise_error(GitEvolution::FileDoesNotExistError)
       end
 
       context 'missing file argument' do
         it 'invalid options' do
           options.file = nil
-          expect { described_class.validate_options!(options) }.to raise_error
+          expect { described_class.validate_options!(options) }.to raise_error(GitEvolution::FileMissingError)
         end
       end
     end
@@ -110,7 +119,7 @@ RSpec.describe GitEvolution::OptionHandler do
       let(:end_line) { 40 }
 
       it 'invalid options' do
-        expect { described_class.validate_options!(options) }.to raise_error
+        expect { described_class.validate_options!(options) }.to raise_error(GitEvolution::RangeOutOfBoundsError)
       end
     end
 
@@ -119,7 +128,7 @@ RSpec.describe GitEvolution::OptionHandler do
         let(:since) { 'csdcsdc' }
 
         it 'invalid options' do
-          expect { described_class.validate_options!(options) }.to raise_error
+          expect { described_class.validate_options!(options) }.to raise_error(GitEvolution::TimeParseError)
         end
       end
 
