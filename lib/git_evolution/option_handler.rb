@@ -5,7 +5,7 @@ module GitEvolution
         range: nil,
         since: nil,
         start_line: nil,
-        end_line: nil,
+        end_line: nil
       )
 
       OptionParser.new do |opts|
@@ -19,6 +19,8 @@ module GitEvolution
         end
       end.parse!
 
+      raise(FileMissingError, 'Missing required file argument') if args.empty?
+
       options[:file] = File.expand_path(args[0])
       options[:start_line], options[:end_line] = parse_range(options[:range])
 
@@ -31,7 +33,7 @@ module GitEvolution
       return if range.nil?
 
       regex_matches = range.match(/^(\d+):(\d+)/)
-      raise 'The --range option was not in the valid format (N:N)' if regex_matches.nil?
+      raise(InvalidRangeFormatError, 'The --range option was not in the valid format (N:N)') if regex_matches.nil?
 
       start_line = regex_matches[1].to_i
       end_line = regex_matches[2].to_i
@@ -41,21 +43,21 @@ module GitEvolution
 
     def self.validate_options!(options)
       if options.file.nil?
-        raise 'Missing required file argument'
+        raise(FileMissingError, 'Missing required file argument')
       elsif !File.exist?(options.file)
-        raise "File #{options.file} does not exist"
+        raise(FileDoesNotExistError, "File #{options.file} does not exist")
       end
 
       if !options.range.nil?
-        raise 'Start line cannot be greater than the end line' if options.start_line > options.end_line
+        raise(RangeOutOfBoundsError, 'Start line cannot be greater than the end line') if options.start_line > options.end_line
 
         file_length = File.new(options.file).readlines.size
-        raise "End line cannot be larger than the length of the file (#{file_length})" if options.end_line > file_length
+        raise(RangeOutOfBoundsError, "End line cannot be larger than the length of the file (#{file_length})") if options.end_line > file_length
       end
 
       if !options.since.nil?
         options.since = Chronic.parse(options.since)
-        raise 'The since time could not be properly parsed' if options.since.nil?
+        raise(TimeParseError, 'The since time could not be properly parsed') if options.since.nil?
       end
     end
   end
