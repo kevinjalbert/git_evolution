@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'bundler', '~> 1.0'
-  spec.add_dependency 'rake', '~> 10.0'
+  spec.add_dependency 'rake', '>= 10', '< 13'
   spec.add_dependency 'rugged', '~> 0.21.0'
   spec.add_dependency 'chronic', '~> 0.10.0'
 
