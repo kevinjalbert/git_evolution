@@ -49,7 +49,7 @@ RSpec.describe GitEvolution::OptionHandler do
       let(:range) { '10.20' }
 
       it 'raises exception' do
-        expect { described_class.parse_range(range) }.to raise_error
+        expect { described_class.parse_range(range) }.to raise_error(GitEvolution::InvalidRangeFormatError)
       end
     end
 
