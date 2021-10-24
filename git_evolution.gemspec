@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['kevin.j.jalbert@gmail.com']
   spec.summary       = 'Gem that provides the ability to determine the evolution of code within a git repository'
   spec.description   = 'Gem that provides the ability to determine the evolution of code within a git repository'
-  spec.homepage      = ''
+  spec.homepage      = 'https://github.com/kevinjalbert/git_evolution'
   spec.license       = 'MIT'
 
   spec.files         = Dir['**/*']
@@ -18,10 +18,10 @@ Gem::Specification.new do |spec|
   spec.executables   = Dir['bin/*'].map { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'bundler', '~> 2.0'
-  spec.add_dependency 'rake', '~> 10.0'
-  spec.add_dependency 'rugged', '~> 0.21.0'
-  spec.add_dependency 'chronic', '~> 0.10.0'
+  spec.add_dependency 'bundler', '>= 2.0'
+  spec.add_dependency 'rake', '>= 13.0'
+  spec.add_dependency 'rugged', '>= 0.21.0'
+  spec.add_dependency 'chronic', '>= 0.10.0'
 
-  spec.required_ruby_version = '~> 2.5'
+  spec.required_ruby_version = '>= 2.5'
 end
