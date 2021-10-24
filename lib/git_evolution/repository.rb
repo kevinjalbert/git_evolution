@@ -15,12 +15,13 @@ module GitEvolution
 
     def raw_line_history(start_line, end_line, file, since = nil)
       since_option = "--since '#{since}'"
+      range_option = "-L#{start_line},#{end_line}:#{file}"
+      follow_option = "--follow '#{file}'"
 
       Dir.chdir(dir) do
         return `git --no-pager log -p -z\
-        #{since_option if since}\
-        #{"-L#{start_line},#{end_line}:#{file}" if start_line && end_line}\
-        --follow #{file}`
+         #{since_option if since}\
+         #{start_line && end_line ? range_option : follow_option}`
       end
     end
   end
