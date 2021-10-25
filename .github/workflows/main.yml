@@ -31,4 +31,15 @@ jobs:
       - name: Coveralls
         uses: coverallsapp/github-action@master
         with:
+          flag-name: run-${{ matrix.os }}-${{ matrix.ruby }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel: true
+  coverage:
+    needs: tests
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Coveralls Coverage Aggregator
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel-finished: true
