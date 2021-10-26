@@ -128,7 +128,7 @@ This works, but it is a lot more information to sift through.
 A better approach (which is what `GitEvolution` uses under the hood) presents the file history for only the concerned portion (7 commits):
 
 ```
-$ git log -L70,75:./activesupport/lib/active_support/core_ext/array/access.rb --follow ./activesupport/lib/active_support/core_ext/array/access.rb
+$ git log -L70,75:./activesupport/lib/active_support/core_ext/array/access.rb
 ```
 
 The output isn't succinct, nor does it have ownership information. The command is also more verbose.
