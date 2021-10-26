@@ -128,10 +128,14 @@ This works, but it is a lot more information to sift through.
 A better approach (which is what `GitEvolution` uses under the hood) presents the file history for only the concerned portion (7 commits):
 
 ```
-$ git log -L70,75:./activesupport/lib/active_support/core_ext/array/access.rb --follow ./activesupport/lib/active_support/core_ext/array/access.rb
+$ git log -L70,75:./activesupport/lib/active_support/core_ext/array/access.rb
 ```
 
 The output isn't succinct, nor does it have ownership information. The command is also more verbose.
+
+### Editor
+
+I made a [Vim function](https://github.com/kevinjalbert/dotfiles/blob/eaca550/vim/vim/functions.vim#L1-L16) that allows me to visually select and call `git_evolution` using `ge` on the selected lines. This opens the output in a new buffer which I can then look through and yank commit SHAs if needed.
 
 ## Contributing
 
